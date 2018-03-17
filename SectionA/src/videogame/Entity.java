@@ -22,6 +22,14 @@ public abstract class Entity {
 	
 	protected abstract int propagateDamage(int damageAmount);
 
+	protected int takeDamage(int damageAmount) {
+    assert (damageAmount >= 0): "damage amount should be non-negative";
+
+    int pointsDeducted = Math.min(lifePoints, damageAmount);
+    this.lifePoints = lifePoints - pointsDeducted;
+    return pointsDeducted;
+  }
+
 	public abstract int minimumStrikeToDestroy();
 
   @Override

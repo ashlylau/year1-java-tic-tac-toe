@@ -9,10 +9,7 @@ public class Magician extends Entity implements SpellCaster {
 
   @Override
   protected int propagateDamage(int damageAmount) {
-    assert (damageAmount >= 0) : "damage amount should be non-negative";
-    int pointsDeducted = Math.min(lifePoints, damageAmount);
-    this.lifePoints = lifePoints - pointsDeducted;
-    return pointsDeducted;
+    return takeDamage(damageAmount);
   }
 
   @Override

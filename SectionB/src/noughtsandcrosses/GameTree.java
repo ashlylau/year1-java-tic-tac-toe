@@ -5,7 +5,6 @@ import java.util.Iterator;
 public class GameTree implements GameTreeInterface {
 	
 	private GameTreeNode root;     //reference to the root board of a game tree
-	private int size = 0;
 
 	public GameTree(Board board){
 		this.root = new GameTreeNode(board);
@@ -25,11 +24,11 @@ public class GameTree implements GameTreeInterface {
 	//YOU ARE ASKED TO IMPLEMENT THIS METHOD
 	//post: Returns the number of boards stored in a game tree, excluded the root.
 	private int sizeTree(GameTreeNode node){
-		size += node.numberOfChildren();
+		int numBoards = node.numberOfChildren();
 		for (GameTreeNode n : node.getChildren()) {
-		  sizeTree(n);
+		  numBoards += sizeTree(n);
     }
-    return size;
+    return numBoards;
 	}	
 	
 	//post: Expands the game tree fully by adding all possible boards in the game.
@@ -37,13 +36,27 @@ public class GameTree implements GameTreeInterface {
 	public void expand(){
 		expandTree(root);
 	}
-	
+
+
+	private static final int NUM_POS = 9;
 	//YOU ARE ASKED TO IMPLEMENT THIS METHOD
 	//post: Expands the game tree from the given node by adding 
 	//      all the possible moves that the computer and the user player
 	//      can make, until the game is finished, from the given node onwards.
 	private void expandTree(GameTreeNode node){
-	 	
+	  Board board = node.getBoard();
+	 	if (!board.isFinished()) {
+	 	  char mark = board.getTurn();
+	 	  for (int pos = 1; pos < NUM_POS+1; pos++) {
+	 	    if (board.getMark(pos) == Board.EMPTY) {
+	 	      Board newBoard = board.makeCopy();
+	 	      GameTreeNode child = new GameTreeNode(newBoard);
+	 	      newBoard.setMark(pos, mark);
+	 	      node.getChildren().add(node.numberOfChildren()+1, child);
+	 	      expandTree(child);
+        }
+      }
+    }
 	}
 	
 	//pre:  The game tree is fully expanded.

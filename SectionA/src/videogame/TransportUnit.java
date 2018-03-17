@@ -5,15 +5,11 @@ import java.util.Set;
 
 public class TransportUnit extends Entity {
   private Set<Entity> entities;
-  private int totalDamage;
-  private int minStrike;
   private static final int DIVISOR = 2;
 
   public TransportUnit(String name, int lifePoints) {
     super(name, lifePoints);
     this.entities = new HashSet<>();
-    this.totalDamage = 0;
-    this.minStrike = 0;
   }
 
   public void add(Entity entity) {
@@ -22,28 +18,19 @@ public class TransportUnit extends Entity {
 
   @Override
   protected int propagateDamage(int damageAmount) {
-    assert (damageAmount >= 0): "damage amount should be non-negative";
-
-    int pointsDeducted = Math.min(lifePoints, damageAmount);
-    this.lifePoints = lifePoints - pointsDeducted;
-
-    totalDamage += pointsDeducted;
+    int totalDamage = takeDamage(damageAmount);
     for (Entity e : entities) {
-      e.propagateDamage(damageAmount/DIVISOR);
+      totalDamage += e.propagateDamage(damageAmount/DIVISOR);
     }
 
     return totalDamage;
   }
 
-  @Override //this is wrong.. fix it later
+  @Override
   public int minimumStrikeToDestroy() {
-
-    if (this.lifePoints > minStrike) {
-      minStrike = lifePoints*2;
-    }
-    minStrike = minStrike/2;
+    int minStrike = lifePoints;
     for (Entity e : entities) {
-      e.minimumStrikeToDestroy();
+      minStrike = Math.max(e.minimumStrikeToDestroy()*DIVISOR, minStrike);
     }
     return minStrike;
   }

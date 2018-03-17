@@ -51,7 +51,7 @@ public class TicTacToe{
 			} else {
 				System.out.println("The computer is starting to play");
 				int pos = computerOptimalMove(board);
-				board.setMark(pos, computerMark);
+				board.setMark(pos + 1, computerMark);
 				System.out.println("The computer has made a move!");
 			}
 		}

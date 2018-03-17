@@ -52,7 +52,7 @@ public class GenericList<T> implements GenericListInterface<T>{
 		    head = node;
       }
       else {
-		    ListNode<T> prev = find(pos);
+		    ListNode<T> prev = find(pos-1);
 		    ListNode<T> curr = prev.getNext();
 		    prev.setNext(node);
 		    node.setNext(curr);
@@ -79,7 +79,7 @@ public class GenericList<T> implements GenericListInterface<T>{
 	
 	//post: Prints the elements in the list.
 	public void display(){
-			System.out.println("The size at the list is " + numItems);
+			System.out.println("The size of the list is " + numItems);
 			for (int pos = 1; pos<= numItems; pos++){
 					System.out.println("The value is " + get(pos));
 			}
@@ -130,7 +130,24 @@ public class GenericList<T> implements GenericListInterface<T>{
 			numItems = 0;
 			head = null;
 	}//end clear
-	
+
+  public static void main(String[] args) {
+    GenericList<String> test = new GenericList<>();
+    test.add(1, "a");
+    test.display();
+    test.add(2, "b");
+    test.add(3, "c");
+    test.display();
+    test.remove(2);
+    test.display();
+    test.add(3, "d");
+    test.display();
+    test.add(1, "e");
+    test.display();
+  }
+
+
+
 }//end GenericList<T>
 
 
